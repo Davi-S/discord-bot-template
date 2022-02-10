@@ -1,0 +1,18 @@
+{
+    "developers": {
+        "reload": {
+            "help": "Use this command and the name of the cog you want to reload",
+            "brief": "Reload a Cog"
+        }
+    },
+    "miscelaneous": {
+        "ping": {
+            "help": "Make me say pong",
+            "brief": "Pong!"
+        },
+        "pong": {
+            "help": "Make me say ping",
+            "brief": "Ping!"
+        }
+    }
+}
