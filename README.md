@@ -1,2 +1,2 @@
 # discord-bot-template
-a discord.py template to fast build bots
+a directory template to fast build discord bots with python
