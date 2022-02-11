@@ -1,3 +1,6 @@
+import logging
+import excecoes
+
 from configs.config import *
 
 from discord import Activity, ActivityType
@@ -7,10 +10,19 @@ from discord.ext import commands
 
 
 def command_text(arquivo, comando, text):
-    with open('commandtexts.json', 'r') as f:
+    """get the help or brief for a command"""  
+    with open('commandtexts.json', 'r', encoding='utf-8') as f:
         data = load(f)
     return data[arquivo][comando][text]
     
+
+def loggermain():
+    logger = logging.getLogger('discord')
+    logger.setLevel(logging.WARN)
+    handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+    handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+    logger.addHandler(handler)
+
 
 def main():
     def get_prefix(bot, message):
@@ -20,7 +32,8 @@ def main():
         prefixos = [prefixo, SPECIAL_PREFIX]
         return commands.when_mentioned_or(*prefixos)(bot, message) # the server prefix or the special prefix
 
-    bot = commands.Bot(command_prefix=get_prefix, activity=Activity(type=ActivityType.playing, name='defalt prefix: ..'))
+    bot = commands.Bot(command_prefix=get_prefix, activity=Activity(type=ActivityType.playing, name='Defalt prefix: ..'))
+
 
     # load cogs/extentions
     extencoes = glob('cogs\**')
@@ -37,16 +50,10 @@ def main():
 
 
     ################# GLOBAL CHECKS AND BEFORE/AFTER INVOKE #################
-    def check_commands(ctx):
-        return True
-
-
     @bot.check_once
     async def black_list(ctx:commands.Context):
         if ctx.message.author.id in BLACK_LIST:
-            await ctx.send(f'{ctx.author.mention}, You are on BLACK_LIST and can not use any command')
-            #TODO make a custom error for black list
-            return False
+            raise excecoes.OnBlackList()
         return True
 
     
@@ -54,11 +61,6 @@ def main():
     async def white_list(ctx:commands.Context):
         if ctx.author.id in WHITE_LIST:
             ctx.command.reset_cooldown(ctx)
-
-
-    @bot.after_invoke
-    async def after(ctx:commands.Context):
-        pass
     #############################################################
 
 
@@ -68,4 +70,5 @@ def main():
 
 
 if __name__ == '__main__':
+    loggermain()
     main()
