@@ -17,7 +17,7 @@ class DevsCog(commands.Cog, name='Devs', description='Commands for devs only', c
     async def cog_command_error(self, ctx, erro):
         if isinstance(erro, excecoes.NotOnWhiteList):
             autor = ctx.message.author
-            comando = self.bot.get_command('reload')
+            comando = ctx.command
             try:  # warns the author on DM
                 await autor.send(f'{ctx.author.mention}, You have no permission to use this command. `{comando.qualified_name}`')
 
