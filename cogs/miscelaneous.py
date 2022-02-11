@@ -5,13 +5,6 @@ class DiversosCog(commands.Cog, name='Misc', description='Commands that do not f
     def __init__(self, bot):
         self.bot = bot
 
-    async def cog_check(self, ctx):
-        return True
-
-    async def cog_before_invoke(self, ctx:commands.Context):
-        pass
-
-
 
     @commands.command(name='ping',
                       help=command_text('miscelaneous', 'ping', 'help'),
@@ -31,4 +24,7 @@ class DiversosCog(commands.Cog, name='Misc', description='Commands that do not f
 
 def setup(bot):
     bot.add_cog(DiversosCog(bot))
-    print('Diversos iniciado')
+    print('Misc initiated')
+
+def teardown(bot):
+    print('Misc unload')

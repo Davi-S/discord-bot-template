@@ -3,6 +3,11 @@ from discord.ext import commands
 
 # minimal help from discord
 class MinimalHelp(commands.MinimalHelpCommand):
+    async def send_error_message(self, error):
+        embed = discord.Embed(title="Error", description=error)
+        channel = self.get_destination()
+        await channel.send(embed=embed)
+
     async def send_pages(self):
         destination = self.get_destination()
         for page in self.paginator.pages:
@@ -28,11 +33,10 @@ class CustomHelp(commands.HelpCommand):
         return await super ().send_command_help(command)
 
     async def on_help_command_error(self, ctx, error):
-        if isinstance(error, commands.BadArgument):
-            embed = discord.Embed(title="Error", description=str(error))
-            await ctx.send(embed=embed)
-        else:
-            raise error
+        return await super().on_help_command_error(ctx, error)
+    
+    async def send_error_message(self, error):
+        return await super().send_error_message(error)
 
 
 
@@ -49,3 +53,6 @@ class HelpCogs(commands.Cog):
 def setup(bot):
     bot.add_cog(HelpCogs(bot))
     print('Help initiated')
+
+def teardown(bot):
+    print('Help unload')
