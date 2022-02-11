@@ -4,7 +4,6 @@ from discord import Activity, ActivityType
 from json import load
 from glob import glob
 from discord.ext import commands
-from help import MinimalHelp
 
 
 def command_text(arquivo, comando, text):
@@ -21,8 +20,7 @@ def main():
         prefixos = [prefixo, SPECIAL_PREFIX]
         return commands.when_mentioned_or(*prefixos)(bot, message) # the server prefix or the special prefix
 
-    bot = commands.Bot(command_prefix=get_prefix, help_command=MinimalHelp(), activity=Activity(type=ActivityType.playing, name='defalt prefix: ..'))
-
+    bot = commands.Bot(command_prefix=get_prefix, activity=Activity(type=ActivityType.playing, name='defalt prefix: ..'))
 
     # load cogs/extentions
     extencoes = glob('cogs\**')
@@ -38,7 +36,7 @@ def main():
         print('**BOT ONLINE!**')
 
 
-    ################# GLOBAL CHECKS AND BEFORE INVOKE #################
+    ################# GLOBAL CHECKS AND BEFORE/AFTER INVOKE #################
     def check_commands(ctx):
         return True
 
@@ -56,6 +54,11 @@ def main():
     async def white_list(ctx:commands.Context):
         if ctx.author.id in WHITE_LIST:
             ctx.command.reset_cooldown(ctx)
+
+
+    @bot.after_invoke
+    async def after(ctx:commands.Context):
+        pass
     #############################################################
 
 
