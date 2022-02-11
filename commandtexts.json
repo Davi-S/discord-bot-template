@@ -1,8 +1,16 @@
 {
     "developers": {
+        "load": {
+            "help": "Use this command and the name of the cog you want to load",
+            "brief": "load a Cog"
+        },
         "reload": {
             "help": "Use this command and the name of the cog you want to reload",
             "brief": "Reload a Cog"
+        }, 
+        "unload": {
+            "help": "Use this command and the name of the cog you want to unload",
+            "brief": "Unload a Cog"
         }
     },
     "miscelaneous": {
